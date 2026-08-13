@@ -97,7 +97,9 @@ a {
     color: white;
     text-decoration: none;
 }
-
+.hhhh{
+    margin-left: -15px;
+}
 
 .link::after {
     content: "";
@@ -421,6 +423,7 @@ a {
 
 .about-right {
     flex: 1;
+    padding-bottom: 35px;
 }
 
 .right {
@@ -988,7 +991,9 @@ a {
     .input-2 {
         width: 100%;
     }
-
+    .yoho{
+        margin-left: 15px;
+    }
 }
 
 @media (max-width: 480px) {
