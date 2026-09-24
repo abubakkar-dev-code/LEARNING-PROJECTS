@@ -46,6 +46,42 @@ burger.addEventListener("click", () => {
     }
 
 });
+
+const typingTarget = document.querySelector("#text");
+const roles = [
+    "MERN STACK DEVELOPER",
+    "FULL STACK DEVELOPER",
+    "AI WITH FULLSTACK DEVELOPER"
+];
+let roleIndex = 0;
+let characterIndex = 0;
+let deletingRole = false;
+
+function typeRole() {
+    if (!typingTarget) return;
+
+    const role = roles[roleIndex];
+    typingTarget.textContent = deletingRole
+        ? role.slice(0, characterIndex - 1)
+        : role.slice(0, characterIndex + 1);
+    characterIndex += deletingRole ? -1 : 1;
+
+    if (!deletingRole && characterIndex === role.length) {
+        deletingRole = true;
+        setTimeout(typeRole, 1800);
+        return;
+    }
+
+    if (deletingRole && characterIndex === 0) {
+        deletingRole = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+    }
+
+    setTimeout(typeRole, deletingRole ? 55 : 100);
+}
+
+typeRole();
+
 // API-Data fetching
 const API_URL = "http://localhost:5000/api";
 
