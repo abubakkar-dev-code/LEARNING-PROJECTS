@@ -84,11 +84,11 @@ async function getProfile() {
     } catch (error) {
         console.error("Profile fetch failed:", error);
         renderContactLinks({
-            email: "hello@example.com",
+            email: "abubakkarm620@example.com",
             phone: "+91 8072062979",
             socialLinks: [
                 "https://github.com/abubakkar-dev-code",
-                "https://www.linkedin.com/"
+                "https://www.linkedin.com/in/abubakkar-a-a-692504267/"
             ]
         });
     }
