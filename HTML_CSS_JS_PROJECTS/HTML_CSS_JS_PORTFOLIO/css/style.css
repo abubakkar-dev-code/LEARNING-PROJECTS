@@ -747,6 +747,36 @@ a {
     margin-top: 15px;
 }
 
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 260px;
+    margin-top: 10px;
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    text-decoration: none;
+    padding: 12px 14px;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    background-color: rgba(34, 34, 34, 0.85);
+}
+
+.contact-link i {
+    width: 20px;
+    color: #8B5CF6;
+    text-align: center;
+}
+
+.contact-link:hover {
+    color: #8B5CF6;
+}
+
 .harm-burger {
     display: none;
     padding: 10px;

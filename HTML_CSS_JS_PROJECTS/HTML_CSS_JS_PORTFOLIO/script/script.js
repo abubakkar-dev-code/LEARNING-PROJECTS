@@ -2,37 +2,6 @@ const navLinks = document.querySelectorAll(".navlink");
 const burger = document.querySelector(".harm-burger");
 const links = document.querySelector(".links");
 const icon = burger.querySelector("i");
-const contactForm = document.querySelector("#contact-form");
-const formStatus = document.querySelector("#formStatus");
-const submitBtn = document.querySelector("#submitBtn")
-
-
-contactForm.addEventListener("submit", (e) => {
-    e.preventDefault()
-    const name = document.querySelector("#name").value.trim()
-    const email = document.querySelector("#email").value.trim()
-    const message = document.querySelector("#message")
-    if (!name || !email || !message) {
-        formStatus.textContent = "Please fill all the feilds";
-        return
-    }
-    submitBtn.disabled = true;
-    submitBtn.textContent = "sending..."
-    formStatus.textContent = ""
-
-    setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Submit"
-        formStatus.textContent = "Response submitted successfully"
-
-        contactForm.reset()
-        setTimeout(() => {
-            formStatus.textContent = "";
-        }, 3000);
-
-    }, 2000)
-
-})
 
 navLinks.forEach((link) => {
     link.addEventListener('click', () => {
@@ -84,7 +53,20 @@ async function getProfile() {
     try {
         const response = await fetch(`${API_URL}/profile`);
         const result = await response.json();
-        console.log(result);
+        const profile = result.data;
+        const links = profile.socialLinks || [];
+        const socialLinks = links.map((link) => {
+            const label = link.toLowerCase().includes("github") ? "GitHub" :
+                link.toLowerCase().includes("linkedin") ? "LinkedIn" : "Social profile";
+            const icon = label === "GitHub" ? "fa-github" :
+                label === "LinkedIn" ? "fa-linkedin" : "fa-link";
+            return `<a class="contact-link" target="_blank" rel="noopener" href="${escapeHtml(link)}"><i class="fa-brands ${icon}"></i><span>${label}</span></a>`;
+        }).join("");
+
+        document.querySelector("#contact-links").innerHTML = `
+            <a class="contact-link" href="mailto:${escapeHtml(profile.email)}"><i class="fa-solid fa-envelope"></i><span>${escapeHtml(profile.email)}</span></a>
+            <a class="contact-link" href="tel:+918072062979"><i class="fa-solid fa-phone"></i><span>+91 8072062979</span></a>
+            ${socialLinks}`;
     } catch (error) {
         console.error("Profile fetch failed:", error);
     }
