@@ -49,26 +49,48 @@ burger.addEventListener("click", () => {
 // API-Data fetching
 const API_URL = "http://localhost:5000/api";
 
+function renderContactLinks(profile = {}) {
+    const links = profile.socialLinks || [];
+    const socialLinks = links.map((link) => {
+        const label = link.toLowerCase().includes("github") ? "GitHub" :
+            link.toLowerCase().includes("linkedin") ? "LinkedIn" : "Social profile";
+        const icon = label === "GitHub" ? "fa-github" :
+            label === "LinkedIn" ? "fa-linkedin" : "fa-link";
+        return `<a class="contact-link" target="_blank" rel="noopener" href="${escapeHtml(link)}"><i class="fa-brands ${icon}"></i><span>${label}</span></a>`;
+    }).join("");
+
+    document.querySelector("#contact-links").innerHTML = `
+        <a class="contact-link" href="mailto:${escapeHtml(profile.email)}"><i class="fa-solid fa-envelope"></i><span>${escapeHtml(profile.email)}</span></a>
+        <a class="contact-link" href="tel:${escapeHtml(profile.phone)}"><i class="fa-solid fa-phone"></i><span>${escapeHtml(profile.phone)}</span></a>
+        ${socialLinks}`;
+}
+
 async function getProfile() {
     try {
         const response = await fetch(`${API_URL}/profile`);
         const result = await response.json();
+        if (!response.ok || !result.data) {
+            throw new Error(result.message || "Profile request failed");
+        }
         const profile = result.data;
-        const links = profile.socialLinks || [];
-        const socialLinks = links.map((link) => {
-            const label = link.toLowerCase().includes("github") ? "GitHub" :
-                link.toLowerCase().includes("linkedin") ? "LinkedIn" : "Social profile";
-            const icon = label === "GitHub" ? "fa-github" :
-                label === "LinkedIn" ? "fa-linkedin" : "fa-link";
-            return `<a class="contact-link" target="_blank" rel="noopener" href="${escapeHtml(link)}"><i class="fa-brands ${icon}"></i><span>${label}</span></a>`;
-        }).join("");
-
-        document.querySelector("#contact-links").innerHTML = `
-            <a class="contact-link" href="mailto:${escapeHtml(profile.email)}"><i class="fa-solid fa-envelope"></i><span>${escapeHtml(profile.email)}</span></a>
-            <a class="contact-link" href="tel:+918072062979"><i class="fa-solid fa-phone"></i><span>+91 8072062979</span></a>
-            ${socialLinks}`;
+        renderContactLinks({
+            email: profile.email || "hello@example.com",
+            phone: profile.phone || "+91 8072062979",
+            socialLinks: profile.socialLinks || [
+                "https://github.com/abubakkar-dev-code",
+                "https://www.linkedin.com/"
+            ]
+        });
     } catch (error) {
         console.error("Profile fetch failed:", error);
+        renderContactLinks({
+            email: "hello@example.com",
+            phone: "+91 8072062979",
+            socialLinks: [
+                "https://github.com/abubakkar-dev-code",
+                "https://www.linkedin.com/"
+            ]
+        });
     }
 }
 
